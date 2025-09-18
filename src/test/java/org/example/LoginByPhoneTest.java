@@ -6,7 +6,7 @@ import org.junit.jupiter.api.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginWithSmsTest {
+public class LoginByPhoneTest {
     static Playwright playwright;
     static Browser browser;
     static BrowserContext context;
@@ -27,7 +27,7 @@ public class LoginWithSmsTest {
     }
 
     @Test
-    void loginWithSms() {
+    void loginWithPhoneAndPassword() {
         System.out.println("Открываем сайт 1xbet.kz");
         page.navigate("https://1xbet.kz/");
 
@@ -35,11 +35,16 @@ public class LoginWithSmsTest {
         page.waitForTimeout(1000);
         page.click("button#login-form-call");
 
-        System.out.println("Вводим ID");
-        page.fill("input#auth_id_email", "168715375");
+        // --- НАЧАЛО СЦЕНАРИЯ ПО ТЕЛЕФОНУ ---
+        System.out.println("Выбираем метод входа по телефону");
+        page.waitForTimeout(1000);
+        page.click("button.c-input-material__custom.custom-functional-button");
+
+        System.out.println("Вводим номер телефона");
+        page.fill("input.phone-input__field[type='tel']", "7471530752");
 
         System.out.println("Вводим пароль");
-        page.fill("input#auth-form-password", "Aezakmi11+");
+        page.fill("input[type='password']", "Aezakmi11+");
 
         System.out.println("Жмём 'Войти' в форме авторизации");
         page.waitForTimeout(1000);
@@ -47,6 +52,8 @@ public class LoginWithSmsTest {
 
         System.out.println("Ждём 20 секунд (капча после 'Войти', если есть)");
         page.waitForTimeout(20000);
+        // --- ДАЛЬШЕ ТВОЙ РАБОЧИЙ СЦЕНАРИЙ ---
+
 
         System.out.println("Ждём модальное окно SMS");
         page.waitForSelector("button:has-text('Выслать код')");
